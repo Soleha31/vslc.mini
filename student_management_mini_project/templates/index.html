@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <div>
+    <p class="eyebrow">STUDENT RECORDS</p>
+    <h1>Manage students, simply.</h1>
+    <p class="muted">Add, search, edit and remove student records from one place.</p>
+  </div>
+  <div class="stat"><span>{{ students|length }}</span><small>records shown</small></div>
+</section>
+
+<section class="panel">
+  <h2>Add a student</h2>
+  <form action="{{ url_for('add_student') }}" method="post" class="student-form">
+    <label>Roll number<input name="roll_number" placeholder="e.g. 24AI02" required maxlength="30"></label>
+    <label>Full name<input name="name" placeholder="Student name" required maxlength="100"></label>
+    <label>Email<input name="email" type="email" placeholder="student@example.com" required maxlength="120"></label>
+    <label>Course<input name="course" placeholder="e.g. Computer Science" required maxlength="100"></label>
+    <button type="submit">+ Add student</button>
+  </form>
+</section>
+
+<section class="panel">
+  <div class="section-heading">
+    <div><h2>Student directory</h2><p class="muted">Search by name, roll number, email or course.</p></div>
+    <form class="search" method="get" action="{{ url_for('index') }}">
+      <input name="q" value="{{ search }}" placeholder="Search records">
+      <button type="submit" class="secondary">Search</button>
+      {% if search %}<a class="clear" href="{{ url_for('index') }}">Clear</a>{% endif %}
+    </form>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Roll No.</th><th>Name</th><th>Email</th><th>Course</th><th>Actions</th></tr></thead>
+      <tbody>
+      {% for student in students %}
+        <tr>
+          <td><span class="roll">{{ student.roll_number }}</span></td>
+          <td>{{ student.name }}</td><td>{{ student.email }}</td><td>{{ student.course }}</td>
+          <td class="actions">
+            <a class="edit" href="{{ url_for('edit_student', student_id=student.id) }}">Edit</a>
+            <form action="{{ url_for('delete_student', student_id=student.id) }}" method="post" onsubmit="return confirm('Delete this student record?');">
+              <button class="danger" type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+      {% else %}
+        <tr><td colspan="5" class="empty">No student records found. Add a student using the form above.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

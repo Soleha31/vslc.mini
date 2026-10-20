@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Edit Student · Student Management System{% endblock %}
+{% block content %}
+<section class="panel narrow">
+  <p class="eyebrow">UPDATE RECORD</p>
+  <h1>Edit student</h1>
+  <p class="muted">Change the details below and save your updates.</p>
+  <form method="post" class="student-form one-column">
+    <label>Roll number<input name="roll_number" value="{{ student.roll_number }}" required maxlength="30"></label>
+    <label>Full name<input name="name" value="{{ student.name }}" required maxlength="100"></label>
+    <label>Email<input name="email" type="email" value="{{ student.email }}" required maxlength="120"></label>
+    <label>Course<input name="course" value="{{ student.course }}" required maxlength="100"></label>
+    <button type="submit">Save changes</button>
+    <a class="back-link" href="{{ url_for('index') }}">← Back to directory</a>
+  </form>
+</section>
+{% endblock %}
